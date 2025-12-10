@@ -8,28 +8,61 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="terminal-wrapper">
-    <div id="terminal-screen">
-      <pre id="terminal-output"></pre>
-        <div id="cam-panel" class="cam-hidden">
-  <div id="cam-header">
-    <span id="cam-title">CAM-07  NORTH WING</span>
-    <span id="cam-status">SIGNAL: STABLE</span>
-  </div>
-  <div id="cam-frame">
-    <img id="cam-image" src="assets/cam/cam07_base.png" alt="Lab camera feed" />
-    <div id="cam-glitch-overlay"></div>
-    <div id="cam-static"></div> 
-  </div>
-  <div id="cam-footer">
-    <span id="cam-timestamp">2033-07-14 03:22:17</span>
-  </div>
-</div>
+  <div id="console-bg">
+    <div class="console-chassis">
+      <!-- Top bar -->
+      <div class="console-top-bar">
+        <span class="console-brand">CAR-NOVA LAB CONTROL UNIT</span>
+        <span class="console-id">NODE: CN-01</span>
+      </div>
 
-      <div id="terminal-input-line">
-        <span id="prompt-label">car-nova.lab &gt;</span>
-        <span id="input-text"></span>
-        <span id="term-cursor">█</span>
+      <!-- Main area: terminal + side panel -->
+      <div class="console-main">
+        <!-- Terminal CRT -->
+        <div id="terminal-screen">
+          <pre id="terminal-output"></pre>
+
+          <!-- Camera panel -->
+          <div id="cam-panel" class="cam-hidden">
+            <div id="cam-header">
+              <span id="cam-title">CAM-07  NORTH WING</span>
+              <span id="cam-status">SIGNAL: STABLE</span>
+            </div>
+            <div id="cam-frame">
+              <img id="cam-image" src="assets/cam/cam07_base.png" alt="Lab camera feed" />
+              <div id="cam-glitch-overlay"></div>
+              <div id="cam-static"></div>
+            </div>
+            <div id="cam-footer">
+              <span id="cam-timestamp">2033-07-14 03:22:17</span>
+            </div>
+          </div>
+
+          <!-- Terminal input line -->
+          <div id="terminal-input-line">
+            <span id="prompt-label">car-nova.lab &gt;</span>
+            <span id="input-text"></span>
+            <span id="term-cursor">█</span>
+          </div>
+        </div>
+
+        <!-- Side status panel -->
+        <div class="console-side-panel">
+          <div class="side-light side-light-green"></div>
+          <div class="side-light side-light-amber"></div>
+          <div class="side-light side-light-red"></div>
+
+          <div class="side-label">POWER</div>
+          <div class="side-label">LINK</div>
+          <div class="side-label">ANOMALY</div>
+        </div>
+      </div>
+
+      <!-- Footer strip -->
+      <div class="console-footer">
+        <span>F1: help</span>
+        <span>F2: cam</span>
+        <span>F3: vault</span>
       </div>
     </div>
   </div>
