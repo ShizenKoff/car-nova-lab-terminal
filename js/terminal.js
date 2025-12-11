@@ -905,35 +905,59 @@ function runCommand(line) {
   }
 }
 
+
+function renderInputBuffer() {
+  if (typeof inputTextEl !== "undefined" && inputTextEl) {
+    inputTextEl.textContent = termState.buffer || "";
+  }
+}
+
+
+
+
 // Key handling for interactive input
-function handleKeyDown(ev) {
-  if (termState.mode !== "ready") {
-    // Allow skip of boot log on key press
-    if (termState.mode === "boot") {
-      outputEl.textContent = bootLines.join("\n") + "\n";
-      outputEl.scrollTop = outputEl.scrollHeight;
-      termState.mode = "ready";
-    }
+function handleKeyDown(evt) {
+  const e = evt || window.event;
+
+  // allow our hidden input and body to drive the terminal,
+  // ignore random other inputs
+  if (
+    e.target !== document.body &&
+    e.target !== focusInputEl
+  ) {
     return;
   }
 
-  const key = ev.key;
+  // keep hidden input from accumulating characters
+  if (focusInputEl) {
+    focusInputEl.value = "";
+  }
 
+  const key = e.key;
+
+  // Example: basic core handling – keep your existing logic here
   if (key === "Backspace") {
-    ev.preventDefault();
     if (termState.buffer.length > 0) {
       termState.buffer = termState.buffer.slice(0, -1);
-      inputTextEl.textContent = termState.buffer;
+      renderInputBuffer();
     }
+    e.preventDefault();
     return;
   }
 
   if (key === "Enter") {
-    ev.preventDefault();
-    const cmd = termState.buffer;
+    const cmd = termState.buffer.trim();
     termState.buffer = "";
-    inputTextEl.textContent = "";
+    renderInputBuffer();
     runCommand(cmd);
+    e.preventDefault();
+    return;
+  }
+
+  if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    termState.buffer += key;
+    renderInputBuffer();
+    e.preventDefault();
     return;
   }
 
