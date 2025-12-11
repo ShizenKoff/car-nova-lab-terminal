@@ -120,15 +120,19 @@ body {
   animation: blink 1s step-end infinite;
 }
 
+/* Hidden input used only to trigger the mobile keyboard */
 #terminal-focus {
   position: absolute;
+  bottom: 8px;      /* keep it inside the terminal area */
+  left: 8px;
+  width: 1px;
+  height: 1px;
   opacity: 0;
-  pointer-events: none;
-  height: 0;
-  width: 0;
   border: 0;
   padding: 0;
+  background: transparent;
 }
+
 
 
 

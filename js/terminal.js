@@ -999,25 +999,36 @@ function handleKeyDown(evt) {
 function initTerminal() {
   typeBootLine();
 
-  // Desktop: still listen on window
-  window.addEventListener("keydown", handleKeyDown);
+  // Desktop / laptop: listen on window
+  if (!isMobile()) {
+    window.addEventListener("keydown", handleKeyDown);
+  }
 
-  // Mobile / focused: listen on the hidden input as well
+  // Mobile: listen on the hidden input only
   if (focusInputEl) {
     focusInputEl.addEventListener("keydown", handleKeyDown);
   }
 
-  // Tap / click anywhere on the terminal screen to focus input
+  // Tap / click anywhere on the terminal screen to focus the hidden input
   if (terminalScreenEl && focusInputEl) {
     terminalScreenEl.addEventListener("mousedown", () => {
-      focusTerminalInput();
+      focusInputEl.focus();
     });
 
     terminalScreenEl.addEventListener(
       "touchstart",
       (evt) => {
-        evt.preventDefault();   // stop scrolling when tapping
-        focusTerminalInput();
+        evt.preventDefault();   // stop scroll/jump on tap
+        focusInputEl.focus();
+      },
+      { passive: false }
+    );
+
+    // Optional: prevent touch-move from scrolling the page while interacting
+    terminalScreenEl.addEventListener(
+      "touchmove",
+      (evt) => {
+        evt.preventDefault();
       },
       { passive: false }
     );
@@ -1025,3 +1036,4 @@ function initTerminal() {
 }
 
 initTerminal();
+
