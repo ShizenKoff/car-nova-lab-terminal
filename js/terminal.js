@@ -906,10 +906,7 @@ function runCommand(line) {
 }
 
 // Key handling for interactive input
-function handleKeyDown(evt) {
-  if (focusInputEl) {
-    focusInputEl.value = "";
-  }
+function handleKeyDown(ev) {
   if (termState.mode !== "ready") {
     // Allow skip of boot log on key press
     if (termState.mode === "boot") {
