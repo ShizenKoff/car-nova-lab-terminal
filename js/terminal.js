@@ -6,6 +6,7 @@ const outputEl = document.getElementById("terminal-output");
 const inputTextEl = document.getElementById("input-text");
 const cursorEl = document.getElementById("term-cursor");
 const terminalScreenEl = document.getElementById("terminal-screen");
+const focusInputEl = document.getElementById("terminal-focus");
 const camPanelEl = document.getElementById("cam-panel");
 const camImageEl = document.getElementById("cam-image");
 const camStatusEl = document.getElementById("cam-status");
@@ -13,6 +14,7 @@ const camTimestampEl = document.getElementById("cam-timestamp");
 const camGlitchEl = document.getElementById("cam-glitch-overlay");
 const camTitleEl = document.getElementById("cam-title");
 const camStaticEl = document.getElementById("cam-static");
+
 
 
 
@@ -233,6 +235,30 @@ const bootLines = [
   "> Hint: type 'help' to explore the lab console.",
   ""
 ];
+
+//-------------------------------- Terminal input focus handling--------------------------------//
+function focusTerminalInput() {
+  if (focusInputEl) {
+    focusInputEl.focus();
+  }
+}
+
+// Click / tap anywhere in the screen to focus the hidden input
+if (terminalScreenEl && focusInputEl) {
+  terminalScreenEl.addEventListener("mousedown", focusTerminalInput);
+  terminalScreenEl.addEventListener(
+    "touchstart",
+    (evt) => {
+      evt.preventDefault(); // stop scrolling when tapping console
+      focusTerminalInput();
+    },
+    { passive: false }
+  );
+}
+
+
+
+
 
 
 //--------------------------------Camera system functions--------------------------------//
@@ -880,7 +906,10 @@ function runCommand(line) {
 }
 
 // Key handling for interactive input
-function handleKeyDown(ev) {
+function handleKeyDown(evt) {
+  if (focusInputEl) {
+    focusInputEl.value = "";
+  }
   if (termState.mode !== "ready") {
     // Allow skip of boot log on key press
     if (termState.mode === "boot") {
@@ -946,10 +975,32 @@ function handleKeyDown(ev) {
   inputTextEl.textContent = termState.buffer;
 }
 
-// Init
 function initTerminal() {
   typeBootLine();
+
+  // Desktop: still listen on window
   window.addEventListener("keydown", handleKeyDown);
+
+  // Mobile / focused: listen on the hidden input as well
+  if (focusInputEl) {
+    focusInputEl.addEventListener("keydown", handleKeyDown);
+  }
+
+  // Tap / click anywhere on the terminal screen to focus input
+  if (terminalScreenEl && focusInputEl) {
+    terminalScreenEl.addEventListener("mousedown", () => {
+      focusTerminalInput();
+    });
+
+    terminalScreenEl.addEventListener(
+      "touchstart",
+      (evt) => {
+        evt.preventDefault();   // stop scrolling when tapping
+        focusTerminalInput();
+      },
+      { passive: false }
+    );
+  }
 }
 
 initTerminal();

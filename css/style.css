@@ -120,6 +120,15 @@ body {
   animation: blink 1s step-end infinite;
 }
 
+#terminal-focus {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  border: 0;
+  padding: 0;
+}
 
 
 
